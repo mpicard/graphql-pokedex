@@ -1,1 +1,1 @@
-web: gunicorn graphql_pokedex.wsgi.application --preload --log-file-
+web: gunicorn graphql_pokedex.wsgi.application --preload
