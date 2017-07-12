@@ -10,7 +10,7 @@ from graphql_pokedex.schema import schema
 
 urlpatterns = [
 
+    url(r'^', GraphQLView.as_view(graphiql=True))
     url(r'^admin/', admin.site.urls),
-    url(r'^graphql', GraphQLView.as_view(graphiql=True))
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
