@@ -11,8 +11,7 @@ class PokemonAdmin(admin.ModelAdmin):
     ordering = ('id',)
 
     def img(self, obj):
-        url = f'{settings.STATIC_URL}img/pokemon/{obj.id}.png'
-        return f'<img src="{url}" height=40>'
+        return f'<img src="{obj.image_url}" height=40>'
 
     img.allow_tags = True
     img.__name__ = 'Image'

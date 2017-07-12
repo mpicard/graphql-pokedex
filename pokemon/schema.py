@@ -1,41 +1,34 @@
-from functools import partial
-
-from graphene import AbstractType, List, relay, resolve_only_args
-
+import graphene
 from graphene_django.types import DjangoObjectType
-from graphene_django.fields import DjangoConnectionField as FilterField
 
-from pokemon.models import Pokemon, PokemonType
-from pokemon.filters import PokemonFilter, PokemonTypeFilter
+from pokemon import models, filters
 
 
 class PokemonTypeNode(DjangoObjectType):
 
     class Meta:
-        model = PokemonType
-        only_fields = ['name']
+        model = models.PokemonType
         # interfaces = [relay.Node]
 
-
 class PokemonNode(DjangoObjectType):
-    types = List(PokemonTypeNode)
+    image_url = graphene.String()
+    types = graphene.List(PokemonTypeNode)
 
-    @resolve_only_args
+    @graphene.resolve_only_args
     def resolve_types(self):
         return self.types.all()
 
     class Meta:
-        model = Pokemon
-        only_fields = ['name']
+        model = models.Pokemon
         # interfaces = [relay.Node]
 
 
-class Query(AbstractType):
-    all_pokemon = List(PokemonNode)
-    all_types = List(PokemonTypeNode)
+class Query(graphene.AbstractType):
+    all_pokemon = graphene.List(PokemonNode)
+    all_types = graphene.List(PokemonTypeNode)
 
     def resolve_all_pokemon(self, args, context, info):
-        return Pokemon.objects.all()
+        return models.Pokemon.objects.all()
 
     def resolve_all_types(self, args, context, info):
-        return PokemonType.objects.all()
+        return models.PokemonType.objects.all()
